@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form id="myForm">
+        <h4>INSCRIPTION</h4>
+        <hr>
+        <div class="name-field">
+            <div>
+                <label for="nom">Nom</label>
+                <input type="text" id="fname" name="nom">
+            </div>
+            <div>
+                <label for="prenom">Prénom</label>
+                <input type="text" id="lname" name="prenom">
+            </div>
+        </div>
+        <label for="date">Date de naissance</label>
+        <input type="date" id="age" name="date">
+        <label for="email">Adresse Mail</label>  
+        <input type="email" id="email" name="email">
+        <label for="password">Mot de passe</label>  
+        <input type="password" id="password" name="password">
+        <div class="button-container">
+            <button type="button" onclick="addHtmlTableRow();">Ajouter</button>
+        </div>
+    </form>
+
+    <div class="table-container">
+        <table id="formTable" border="1">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Adresse Mail</th>
+                    <th>Mot de passe</th>
+                    <th>Date de naissance</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Les données seront ajoutées ici via JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Variables globales
+        var rIndex,
+            table = document.getElementById("formTable");
+
+        // Fonction pour vérifier si les champs du formulaire sont vides
+        function checkEmptyInput() {
+            // Logique pour vérifier chaque champ et afficher une alerte si vide
+            var isEmpty = false,
+                nom = document.getElementById("fname").value,
+                prenom = document.getElementById("lname").value,
+                date = document.getElementById("age").value,
+                email = document.getElementById("email").value,
+                password = document.getElementById("password").value;
+
+            if (nom === "") {
+                alert("Le nom ne peut pas être vide");
+                isEmpty = true;
+            } else if (prenom === "") {
+                alert("Le prénom ne peut pas être vide");
+                isEmpty = true;
+            } else if (date === "") {
+                alert("La date de naissance ne peut pas être vide");
+                isEmpty = true;
+            } else if (email === "") {
+                alert("L'adresse e-mail ne peut pas être vide");
+                isEmpty = true;
+            } else if (password === "") {
+                alert("Le mot de passe ne peut pas être vide");
+                isEmpty = true;
+            }
+            return isEmpty;
+        }
+
+
+        // Fonction pour ajouter une nouvelle ligne au tableau
+        function addHtmlTableRow() {
+            // Logique pour créer une nouvelle ligne et ajouter des cellules au tableau
+            if (!checkEmptyInput()) {
+                var newRow = table.insertRow(table.rows.length),
+                    cells = [];
+
+                for (var i = 0; i < 5; i++) {
+                    cells[i] = newRow.insertCell(i);
+                }
+
+                cells[0].innerHTML = document.getElementById("fname").value;
+                cells[1].innerHTML = document.getElementById("lname").value;
+                cells[2].innerHTML = document.getElementById("email").value;
+                cells[3].innerHTML = document.getElementById("password").value;
+                cells[4].innerHTML = document.getElementById("age").value;
+
+                var actionsCell = newRow.insertCell(5);
+                var editButton = document.createElement("button");
+                editButton.textContent = "Éditer";
+                editButton.addEventListener('click', function() {
+                    editHtmlTbleSelectedRow(newRow);
+                });
+                actionsCell.appendChild(editButton);
+
+                var deleteButton = document.createElement("button");
+                deleteButton.textContent = "Supprimer";
+                deleteButton.addEventListener('click', function() {
+                    removeSelectedRow(newRow);
+                });
+                actionsCell.appendChild(deleteButton);
+
+                resetForm();
+            }
+        }
+
+        // Fonction pour éditer la ligne sélectionnée dans le tableau
+        function editHtmlTbleSelectedRow(row) {
+            // Logique pour mettre à jour les valeurs de la ligne sélectionnée
+            if (!checkEmptyInput()) {
+                row.cells[0].innerHTML = document.getElementById("fname").value;
+                row.cells[1].innerHTML = document.getElementById("lname").value;
+                row.cells[2].innerHTML = document.getElementById("email").value;
+                row.cells[3].innerHTML = document.getElementById("password").value;
+                row.cells[4].innerHTML = document.getElementById("age").value;
+            }
+        }
+
+        // Fonction pour supprimer la ligne sélectionnée dans le tableau
+        function removeSelectedRow(row) {
+            // Logique pour supprimer la ligne du tableau
+            table.deleteRow(row.rowIndex);
+            resetForm();
+        }
+
+        // Fonction pour réinitialiser le formulaire
+        function resetForm() {
+            // Logique pour réinitialiser les champs du formulaire
+            document.getElementById('fname').value = "";
+            document.getElementById('lname').value = "";
+            document.getElementById('email').value = "";
+            document.getElementById('password').value = "";
+            document.getElementById('age').value = "";
+        }
+    </script>
+</body> 
+</html>
